@@ -1,5 +1,7 @@
 package decisionsystems;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 class Neuron {
@@ -76,7 +78,7 @@ class Neuron {
     }
 
     // GA methods
-    public static void mate(Neuron p1, Neuron p2, Neuron target) {
+    public static void mate(@NotNull Neuron p1, Neuron p2, Neuron target) {
         for (int i=0; i<p1.nTarget; i++)
             target.weights[i] = random.nextBoolean() ? p1.weights[i] : p2.weights[i];
     }

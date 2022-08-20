@@ -1,10 +1,11 @@
 package agents;
 
-public interface GeneticAgent extends Comparable {
+public interface Agent extends Comparable {
+    Agent getInstance();
     void calculateFitness();
     void mutate();
     void reset();
-    void mate(GeneticAgent other, GeneticAgent target);
+    void mate(Agent other, Agent target);
     void summarizeResult();
 
 }
