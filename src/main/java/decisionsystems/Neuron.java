@@ -7,12 +7,12 @@ import java.util.Random;
 class Neuron {
     int nTarget;
 
-    Neuron[] target;
+    Neuron[] targets;
     double[] weights;
     double bias;
     double value;
 
-    int activation =3;
+    int activation = RELU;
 
     static double range = 10;
 
@@ -28,38 +28,33 @@ class Neuron {
         this.nTarget = nTarget;
 
         if (nTarget != 0) {
-            target = new Neuron[nTarget];
+            targets = new Neuron[nTarget];
             weights = new double[nTarget];
         }
         value = 0;
 
         // Initialize weight with random value
-        //bias = random.nextDouble() * range * 2 - range;
-        bias = generateRandomValue();
+        bias = random.nextDouble() * range * 2 - range;
         for (int i = 0; i < nTarget; i++)
-            weights[i] = 0;
-            //weights[i] = random.nextDouble() * range * 2 - range;
+            weights[i] = random.nextDouble() * range * 2 - range;
     }
 
     public void setTarget(int i, Neuron target) {
-        this.target[i] = target;
+        this.targets[i] = target;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
-    public void addValue(double value) {
+    public void addToValue(double value) {
         this.value += value;
     }
 
-    public void addToTarget() {
-        for (Neuron neuron : target)
-            neuron.addValue(excecuteActivationFunction() + bias);
-
+    public void addValueToTargets() {
+        for (Neuron neuron : targets)
+            neuron.addToValue(excetuteActivationFunction());
     }
 
-    private double excecuteActivationFunction() {
+    private double excetuteActivationFunction() {
+        value += bias;
+
         if (activation == 0)
             return value;
         else if (activation == 1)
@@ -79,6 +74,7 @@ class Neuron {
 
     // GA methods
     public static void mate(@NotNull Neuron p1, Neuron p2, Neuron target) {
+        // Fix this to not be too random
         for (int i=0; i<p1.nTarget; i++)
             target.weights[i] = random.nextBoolean() ? p1.weights[i] : p2.weights[i];
     }

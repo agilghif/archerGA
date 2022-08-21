@@ -1,4 +1,3 @@
-import agents.Agent1;
 import agents.Agent;
 
 import java.util.ArrayList;
@@ -7,30 +6,11 @@ import java.util.Random;
 
 public class Trainer {
     static Random random = new Random();
-    //static Grapher g = new Grapher(500, 500);
 
     private ArrayList<Agent> agents;
     private Agent generator;
 
     private int nGeneration, nPopulation, mutationRate, nSurvive, nChild;
-
-//    public static void main(String[] args) {
-//        // set Params
-//        nGenerations = 1000;
-//        nPopulation = 100*3;
-//        mutationRate = 3;
-//        nSurvive = 100;
-//        nChild = 1;
-//
-//        // Initialization
-//        initialize();
-//
-//        // Simulate
-//        run(1);
-//
-//        // Simulate best
-//        summarizeResult(getBest());
-//    }
 
     public Trainer(Agent generator) {
         this.generator = generator;

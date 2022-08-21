@@ -1,5 +1,7 @@
 package decisionsystems;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 public class Brain {
@@ -12,15 +14,16 @@ public class Brain {
     public Brain(int nInput, int[] structure, int nOutput) {
         int nHidden = structure.length;
 
-        // initialize array
+        // initialize input, output, and hidden neurons layer
         input = new Neuron[nInput];
         output = new Neuron[nOutput];
         hidden = new Neuron[nHidden][];
 
-        for (int i=0; i<nHidden; i++)
+        for (int i=0; i<nHidden; i++) // Add a neuron array to each layer
             hidden[i] = new Neuron[structure[i]];
 
-        // Fill neuron
+
+        // Add neuron instances to every neuron layer
         for (int i=0; i<nOutput; i++) // output
             output[i] = new Neuron(0);
 
@@ -33,7 +36,8 @@ public class Brain {
         for (int i=0; i<nInput; i++) // input
             input[i] = new Neuron(structure[0]);
 
-        // Connect neurons
+
+        // Connect input neurons - hidden neurons - output neurons
         connect(hidden[nHidden-1], output);
 
         for (int i=nHidden-2; i>=0; i--)
@@ -42,7 +46,8 @@ public class Brain {
         connect(input, hidden[0]);
     }
 
-    private void connect(Neuron[] source, Neuron[] target) {
+    private void connect(Neuron @NotNull [] source, Neuron @NotNull [] target) {
+        // Connecting two neuron layers densely
         int sLen = source.length;
         int tLen = target.length;
 
@@ -51,24 +56,29 @@ public class Brain {
                 source[i].setTarget(j, target[j]);
     }
 
-    public void emptyNeurons() {
+    public void setNeuronsValueToZero() {
+        // Zero every neuron in hidden layer
         for (Neuron[] layer : hidden)
             for (Neuron neuron : layer)
                 neuron.value = 0;
 
+        // Zero every neuron in output layer
         for (Neuron neuron : output)
             neuron.value = 0;
     }
 
     public void propagate() {
+        // Propagate values from input layer to output
         for (Neuron neuron : input)
-            neuron.addToTarget();
+            neuron.addValueToTargets();
 
         for (Neuron[] layer : hidden)
             for (Neuron neuron : layer)
-                neuron.addToTarget();
+                neuron.addValueToTargets();
     }
 
+
+    // Input set and output get methods
     public double getOutput(int idx) {
         return output[idx].value;
     }
@@ -78,7 +88,6 @@ public class Brain {
     }
 
     // GA methods
-
     public static void mate(Brain p1, Brain p2, Brain target) {
         int nInput = p1.input.length;
         int nHidden = p1.hidden.length;
